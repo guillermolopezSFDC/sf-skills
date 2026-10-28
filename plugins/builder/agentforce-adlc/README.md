@@ -214,11 +214,7 @@ plugins/builder/agentforce-adlc/
 └── skills/              # Portable Agent Skills, mirrored from this repo's flat skills/ tree
     ├── agentforce-generate/          # Author + discover + scaffold + deploy + safety + feedback
     ├── agentforce-test/              # Preview + batch testing + action execution + OWASP security testing
-    ├── agentforce-observe/           # STDM trace analysis + fix loop
-    ├── agentforce-architecture-analyze/
-    ├── agentforce-d360-analyze/
-    ├── agentforce-persona-generate/
-    └── agentforce-bot-upgrade/
+    └── agentforce-observe/           # STDM trace analysis + fix loop
 ```
 
 ## Agent Script conventions

@@ -9,13 +9,5 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
-  },
-  "devDependencies": {
-    "@salesforce/ui-bundle-template-app-react-sample-b2e": "^12.4.4",
-    "@salesforce/ui-bundle-template-app-react-sample-b2x": "^12.4.4"
-  },
-  "scripts": {
-    "sync-react-b2e-sample": "node scripts/sync-react-b2e-sample.js",
-    "sync-react-b2x-sample": "node scripts/sync-react-b2x-sample.js"
   }
 }
