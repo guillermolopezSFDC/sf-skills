@@ -511,7 +511,7 @@ class DynamicLoadingTests(unittest.TestCase):
     def test_codex_install_subprocess_keeps_isolated_home(self):
         runner = mock.Mock(return_value=mock.Mock(returncode=0, stdout="", stderr=""))
         ok, _ = sf_context._run_plugin_install_step(
-            ["codex", "plugin", "add", "agentforce-adlc@salesforce", "--json"],
+            ["codex", "plugin", "add", "agentforce-adlc@gla_salesforce", "--json"],
             env={
                 "PATH": "/usr/bin",
                 "CODEX_HOME": "/tmp/isolated-codex",
@@ -866,7 +866,7 @@ class DynamicLoadingTests(unittest.TestCase):
                 "experience-react", entry, "codex:s", "codex"
             ))
         self.assertEqual(
-            ["codex", "plugin", "add", "experience-react@salesforce", "--json"],
+            ["codex", "plugin", "add", "experience-react@gla_salesforce", "--json"],
             run.call_args.args[0],
         )
         self.assertIn("Start a new Codex session", stdout.getvalue())

@@ -34,7 +34,7 @@ drive from the menu merely because it names `agentforce-adlc`, `experience-cms`,
 - Run every companion script with `SF_AGENT_CLIENT=codex` (for example
   `SF_AGENT_CLIENT=codex "<COMPANION_ROOT>/scripts/sf-context" check-tools`).
 - Companion not installed: replace the engine's `/plugin …` lines with
-  `codex plugin add salesforce-development@salesforce --json`, then tell the user to start a new
+  `codex plugin add salesforce-development@gla_salesforce --json`, then tell the user to start a new
   Codex session and re-run the Test Drive start workflow.
 - Companion installed but with no `.codex-plugin/plugin.json`: its installed version has no Codex
   lifecycle support. Say so and stop; do not suggest reinstalling.

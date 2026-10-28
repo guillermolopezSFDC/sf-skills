@@ -5790,7 +5790,7 @@ class PluginInstallTelemetryTests(unittest.TestCase):
         install.assert_not_called()
         rendered = stdout.getvalue()
         self.assertIn("TRUST WARNING", rendered)
-        self.assertIn(f"Installs from: {name}@salesforce", rendered)
+        self.assertIn(f"Installs from: {name}@gla_salesforce", rendered)
         pending = sfx._load_plugin_install_pending(session_id)
         self.assertEqual(pending["name"], name)
         self.assertEqual(sfx._load_plugin_flow(session_id)["state"], "awaiting-confirmation")
@@ -6785,7 +6785,7 @@ class PluginInstallMarketplaceRoutingTests(unittest.TestCase):
     def test_marketplace_name_is_salesforce_for_local_source(self):
         name = "experience-react"
         entry = {"source": f"./plugins/builder/{name}"}
-        self.assertEqual(sfx._plugin_install_marketplace_name(name, entry), "salesforce")
+        self.assertEqual(sfx._plugin_install_marketplace_name(name, entry), "gla_salesforce")
 
     def test_marketplace_name_is_salesforce_for_local_source_outside_builder(self):
         # A local entry elsewhere in the tree (e.g. an opted-in
@@ -6794,7 +6794,7 @@ class PluginInstallMarketplaceRoutingTests(unittest.TestCase):
         # _plugin_install_marketplace_name is about publication, not routing).
         name = "skill-platform"
         entry = {"source": f"./plugins/internal/{name}"}
-        self.assertEqual(sfx._plugin_install_marketplace_name(name, entry), "salesforce")
+        self.assertEqual(sfx._plugin_install_marketplace_name(name, entry), "gla_salesforce")
 
     def test_perform_install_routes_local_source_through_salesforce_and_registers(self):
         name = "experience-react"
@@ -6813,7 +6813,7 @@ class PluginInstallMarketplaceRoutingTests(unittest.TestCase):
         self.result.assert_called_once_with("installed", "sess-local", name)
         reg.assert_called_once()
         argv = run_step.call_args_list[0].args[0]
-        self.assertEqual(argv, ["claude", "plugin", "install", f"{name}@salesforce", "--yes"])
+        self.assertEqual(argv, ["claude", "plugin", "install", f"{name}@gla_salesforce", "--yes"])
 
     def test_perform_install_failure_names_salesforce_and_offers_remediation(self):
         name = "experience-react"
@@ -6827,11 +6827,11 @@ class PluginInstallMarketplaceRoutingTests(unittest.TestCase):
             self.assertEqual(sfx._perform_plugin_install(name, entry, "sess-fail"), 3)
         self.result.assert_called_once_with("subprocess_failure", "sess-fail", name)
         err = stderr.getvalue()
-        self.assertIn("salesforce", err)
+        self.assertIn("gla_salesforce", err)
         # `update` presumes the marketplace exists, so the unregistered case must
         # be steered to `add forcedotcom/sf-skills`; the stale case to `update`.
         self.assertIn("marketplace add forcedotcom/sf-skills", err)
-        self.assertIn("marketplace update salesforce", err)
+        self.assertIn("marketplace update gla_salesforce", err)
 
     def test_ensure_registered_dev_mode_adds_local_checkout(self):
         with mock.patch.object(
@@ -6852,7 +6852,7 @@ class PluginInstallMarketplaceRoutingTests(unittest.TestCase):
         argvs = [call.args[0] for call in run_step.call_args_list]
         self.assertEqual(argvs, [
             ["claude", "plugin", "marketplace", "add", "forcedotcom/sf-skills"],
-            ["claude", "plugin", "marketplace", "update", "salesforce"],
+            ["claude", "plugin", "marketplace", "update", "gla_salesforce"],
         ])
 
 

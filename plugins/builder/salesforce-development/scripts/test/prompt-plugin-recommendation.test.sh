@@ -22,7 +22,7 @@ NONPROJ="$(mktemp -d)"
 trap 'rm -rf "$CFG" "$PROJ" "$NONPROJ"' EXIT
 
 # Only the foundation plugin is installed; every add-on is available to match.
-printf '{"enabledPlugins":{"salesforce-development@salesforce":true}}' \
+printf '{"enabledPlugins":{"salesforce-development@gla_salesforce":true}}' \
   > "$CFG/settings.json"
 export CLAUDE_CONFIG_DIR="$CFG"
 printf '{"packageDirectories":[{"path":"force-app","default":true}]}' \
@@ -752,7 +752,7 @@ else
 fi
 
 # An enabled plugin is not a recommendation candidate.
-printf '{"enabledPlugins":{"salesforce-development@salesforce":true,"experience-cms@salesforce":true}}' \
+printf '{"enabledPlugins":{"salesforce-development@gla_salesforce":true,"experience-cms@gla_salesforce":true}}' \
   > "$CFG/settings.json"
 OUT_INSTALLED=$(run_prompt "$PROJ" "prompt-installed-$$-$RANDOM" \
   "I need to search Salesforce CMS for an existing media asset")
@@ -772,7 +772,7 @@ for installed_case in \
   "dx-isv-partner|AppAnalyticsQueryRequest PackageUsageSummary SubscriberSnapshot"; do
   plugin="${installed_case%%|*}"
   prompt="${installed_case#*|}"
-  printf '{"enabledPlugins":{"salesforce-development@salesforce":true,"%s@salesforce":true}}' \
+  printf '{"enabledPlugins":{"salesforce-development@gla_salesforce":true,"%s@gla_salesforce":true}}' \
     "$plugin" > "$CFG/settings.json"
   OUT_INSTALLED=$(run_prompt "$PROJ" "prompt-installed-${plugin}-$$-$RANDOM" "$prompt")
   if ! echo "$OUT_INSTALLED" | grep -q "/salesforce-development:plugin-install ${plugin}"; then
@@ -785,7 +785,7 @@ done
 # --- W-23856691 tranche 2: service-engagement, integration, ----------------
 # platform-lightning-widgets. Reset to the foundation-only baseline first —
 # the loop above left an add-on enabled.
-printf '{"enabledPlugins":{"salesforce-development@salesforce":true}}' \
+printf '{"enabledPlugins":{"salesforce-development@gla_salesforce":true}}' \
   > "$CFG/settings.json"
 
 assert_route \
@@ -869,7 +869,7 @@ for new_installed_case in \
   "platform-lightning-widgets|generate a custom Salesforce Lightning Type"; do
   plugin="${new_installed_case%%|*}"
   prompt="${new_installed_case#*|}"
-  printf '{"enabledPlugins":{"salesforce-development@salesforce":true,"%s@salesforce":true}}' \
+  printf '{"enabledPlugins":{"salesforce-development@gla_salesforce":true,"%s@gla_salesforce":true}}' \
     "$plugin" > "$CFG/settings.json"
   OUT_NEW_INSTALLED=$(run_prompt "$PROJ" "prompt-installed-${plugin}-$$-$RANDOM" "$prompt")
   if ! echo "$OUT_NEW_INSTALLED" | grep -q "/salesforce-development:plugin-install ${plugin}"; then
@@ -882,7 +882,7 @@ done
 # Host-injected context (IDE notices, task notifications) is not the user's
 # words. It must not drive a recommendation, open a workflow, or decide an
 # install; the user's own words around it still do.
-printf '{"enabledPlugins":{"salesforce-development@salesforce":true}}' > "$CFG/settings.json"
+printf '{"enabledPlugins":{"salesforce-development@gla_salesforce":true}}' > "$CFG/settings.json"
 IDE_LWC_NOTICE='<ide_opened_file>The user opened the file /Users/me/proj/force-app/main/default/lwc/heroBanner/heroBanner.js in the IDE.</ide_opened_file>'
 # Hosts put the notice on its own line, so each fixture separates it with a
 # newline (the one-line form was already quiet before host blocks were stripped).
@@ -960,7 +960,7 @@ assert_route \
 # Outside a project only the user's own words can trip the getting-started note:
 # Salesforce wording that lives in a host block, or only inside a typed path or
 # URL, is not a mention.
-printf '{"enabledPlugins":{"salesforce-development@salesforce":true}}' > "$CFG/settings.json"
+printf '{"enabledPlugins":{"salesforce-development@gla_salesforce":true}}' > "$CFG/settings.json"
 for gs_case in \
   "host ide_selection|<ide_selection>start a new Salesforce project</ide_selection> explain this" \
   "host task-notification|<task-notification><result>new Salesforce project</result></task-notification>" \

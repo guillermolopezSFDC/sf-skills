@@ -2,7 +2,7 @@
   "schemaVersion": "1.0",
   "generatedFrom": {
     "marketplace": ".claude-plugin/marketplace.json",
-    "marketplaceSha256": "214f3114374d89c003060972b47f427ba79aa9acc33a9e2a03ac9725f220fa43"
+    "marketplaceSha256": "29a2944d4a9c3c03056d1832fcab29849a0dda27d9fb9b6dea8475ead1e3645d"
   },
   "plugins": [
     {

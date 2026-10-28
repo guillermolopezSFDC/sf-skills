@@ -21,13 +21,13 @@ to do the build.
      from the same marketplace — Claude Code may still let you install this plugin alone, so do
      not skip the foundation install:
      ```text
-     /plugin marketplace add forcedotcom/sf-skills
-     /plugin install salesforce-development@salesforce
+     /plugin marketplace add guillermolopezSFDC/sf-skills
+     /plugin install salesforce-development@gla_salesforce
      ```
 
 2. **Install this plugin** from the same marketplace:
    ```text
-   /plugin install salesforce-test-drive@salesforce
+   /plugin install salesforce-test-drive@gla_salesforce
    ```
 
 3. **Connect an org** (or let the test drive walk you through getting one — including a free
@@ -102,8 +102,8 @@ Codex hooks, so it applies when those hooks are trusted and enabled.
 ## Verify, Update, and Uninstall
 
 - **Verify:** `/plugin` lists `salesforce-test-drive`; `/salesforce-test-drive:start` opens the menu.
-- **Update:** `/plugin marketplace update salesforce` then `/plugin update salesforce-test-drive@salesforce`.
-- **Uninstall:** `/plugin uninstall salesforce-test-drive@salesforce`.
+- **Update:** `/plugin marketplace update gla_salesforce` then `/plugin update salesforce-test-drive@gla_salesforce`.
+- **Uninstall:** `/plugin uninstall salesforce-test-drive@gla_salesforce`.
 
 ## Contributing a drive
 

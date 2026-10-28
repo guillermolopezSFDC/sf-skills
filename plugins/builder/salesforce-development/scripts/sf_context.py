@@ -14347,10 +14347,10 @@ _PLUGIN_INSTALL_MAX_STREAM_BYTES = 4000
 
 # Every catalog entry is local (`./plugins/builder/<name>` or, per the
 # W-24078663 gap noted on _plugin_install_is_same_marketplace, some other
-# in-repo relative path). They all live in this repo's own "salesforce"
-# marketplace, published at `forcedotcom/sf-skills`.
-_SALESFORCE_MARKETPLACE_NAME = "salesforce"
-_SALESFORCE_MARKETPLACE_REPO = "forcedotcom/sf-skills"
+# in-repo relative path). They all live in this repo's own "gla_salesforce"
+# marketplace, published at `guillermolopezSFDC/sf-skills`.
+_SALESFORCE_MARKETPLACE_NAME = "gla_salesforce"
+_SALESFORCE_MARKETPLACE_REPO = "guillermolopezSFDC/sf-skills"
 
 
 def _plugin_install_subprocess_env(env) -> dict:
@@ -14429,7 +14429,7 @@ def _plugin_install_local_marketplace_root() -> Optional[Path]:
 
 def _ensure_salesforce_marketplace_registered(env, client: str = "claude") -> None:
     """Best-effort, idempotent registration of this repo's own "salesforce"
-    marketplace so a subsequent `<name>@salesforce` install can resolve.
+    marketplace so a subsequent `<name>@gla_salesforce` install can resolve.
 
     Two paths, because this plugin reaches users two very different ways:
 

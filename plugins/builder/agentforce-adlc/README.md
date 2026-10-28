@@ -58,8 +58,8 @@ Each skill can be invoked independently. Run `/agentforce-test` on an existing a
 In Claude Code, install the plugin from the Salesforce-hosted marketplace:
 
 ```text
-/plugin marketplace add forcedotcom/sf-skills
-/plugin install agentforce-adlc@salesforce
+/plugin marketplace add guillermolopezSFDC/sf-skills
+/plugin install agentforce-adlc@gla_salesforce
 ```
 
 When installed as a plugin, skills are namespaced, e.g. `/agentforce-adlc:agentforce-generate`,

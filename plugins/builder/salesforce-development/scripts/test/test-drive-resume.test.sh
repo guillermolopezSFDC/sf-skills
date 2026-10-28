@@ -44,11 +44,11 @@ printf '{"packageDirectories":[{"path":"force-app","default":true}]}' \
   > "$PROJ/sfdx-project.json"
 
 installed_both() {
-  printf '{"enabledPlugins":{"salesforce-development@salesforce":true,"salesforce-test-drive@salesforce":true}}' \
+  printf '{"enabledPlugins":{"salesforce-development@gla_salesforce":true,"salesforce-test-drive@gla_salesforce":true}}' \
     > "$CFG/settings.json"
 }
 installed_foundation_only() {
-  printf '{"enabledPlugins":{"salesforce-development@salesforce":true}}' \
+  printf '{"enabledPlugins":{"salesforce-development@gla_salesforce":true}}' \
     > "$CFG/settings.json"
 }
 

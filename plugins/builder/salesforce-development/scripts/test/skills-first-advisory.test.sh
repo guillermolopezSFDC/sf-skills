@@ -33,7 +33,7 @@ TMPDIR="$(mktemp -d)"; export TMPDIR
 # experience plugins enabled. `salesforce-development` is always excluded as the
 # plugin running this code.
 CFG="$(mktemp -d)"
-printf '{"enabledPlugins":{"experience-lwc@salesforce":true,"experience-react@salesforce":true}}' \
+printf '{"enabledPlugins":{"experience-lwc@gla_salesforce":true,"experience-react@gla_salesforce":true}}' \
   > "$CFG/settings.json"
 export CLAUDE_CONFIG_DIR="$CFG"
 trap 'rm -rf "$TMPDIR" "$CFG" "${PROJDIR:-}" "${NONPROJ:-}"' EXIT

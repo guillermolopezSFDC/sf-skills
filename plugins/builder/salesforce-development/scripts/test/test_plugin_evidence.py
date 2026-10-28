@@ -105,7 +105,7 @@ class PluginEvidenceTests(unittest.TestCase):
         (self.project / 'sfdx-project.json').write_text('{"packageDirectories":[]}')
         config = self.project / 'config'
         config.mkdir()
-        (config / 'settings.json').write_text('{"enabledPlugins":{"salesforce-development@salesforce":true}}')
+        (config / 'settings.json').write_text('{"enabledPlugins":{"salesforce-development@gla_salesforce":true}}')
         previous = Path.cwd()
         os.chdir(self.project)
         self.addCleanup(os.chdir, previous)

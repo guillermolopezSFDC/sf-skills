@@ -57,7 +57,7 @@ STUBDIR=$(mktemp -d)
 STUB_LOG="$STUBDIR/claude-calls.log"
 HERMETIC_CONFIG=$(mktemp -d)
 HERMETIC_PROJECT=$(mktemp -d)
-printf '{"enabledPlugins":{"salesforce-development@salesforce":true}}' \
+printf '{"enabledPlugins":{"salesforce-development@gla_salesforce":true}}' \
   > "$HERMETIC_CONFIG/settings.json"
 printf '{"packageDirectories":[],"sourceApiVersion":"66.0"}' \
   > "$HERMETIC_PROJECT/sfdx-project.json"
@@ -129,7 +129,7 @@ if [ "$CODE_TRUSTED" -eq 0 ] \
    && ! echo "$OUT_TRUSTED" | grep -q "Plugin: $TRUSTED_NAME" \
    && ! echo "$OUT_TRUSTED" | grep -q -- "--confirm" \
    && [ "$TRUSTED_CALL1" = "plugin marketplace add $MONOREPO_ROOT" ] \
-   && [ "$TRUSTED_CALL2" = "plugin install $TRUSTED_NAME@salesforce --yes" ]; then
+   && [ "$TRUSTED_CALL2" = "plugin install $TRUSTED_NAME@gla_salesforce --yes" ]; then
   PASS=$((PASS + 1)); printf '  ok   %-60s → one acceptance, direct install + reload handoff\n' \
     "trusted proposed install"
 else
@@ -165,7 +165,7 @@ CODE_DRY=$?
 NONCE=$(extract_nonce "$OUT_DRY")
 if [ "$CODE_DRY" -eq 0 ] \
    && echo "$OUT_DRY" | grep -q "Plugin: $NAME" \
-   && echo "$OUT_DRY" | grep -q "Installs from: $NAME@salesforce" \
+   && echo "$OUT_DRY" | grep -q "Installs from: $NAME@gla_salesforce" \
    && ! echo "$OUT_DRY" | grep -qi "TRUST WARNING" \
    && echo "$OUT_DRY" | grep -q "must run /reload-plugins" \
    && [ -n "$NONCE" ] \
@@ -231,7 +231,7 @@ fi
 # --- an already-installed name refuses --------------------------------------
 CONFIG_DIR=$(mktemp -d)
 cat > "$CONFIG_DIR/settings.json" <<EOF
-{"enabledPlugins": {"$NAME@salesforce": true}}
+{"enabledPlugins": {"$NAME@gla_salesforce": true}}
 EOF
 OUT_INSTALLED=$(CLAUDE_CONFIG_DIR="$CONFIG_DIR" "$CTX" plugin-install "$NAME" 2>&1)
 CODE_INSTALLED=$?
@@ -280,7 +280,7 @@ if [ "$CODE_OK" -eq 0 ] \
    && echo "$OUT_OK" | grep -q "submit a concrete task to begin using it" \
    && ! echo "$OUT_OK" | grep -q "resume your original task" \
    && [ "$CALL1" = "plugin marketplace add $MONOREPO_ROOT" ] \
-   && [ "$CALL2" = "plugin install $NAME@salesforce --yes" ]; then
+   && [ "$CALL2" = "plugin install $NAME@gla_salesforce --yes" ]; then
   PASS=$((PASS + 1)); printf '  ok   %-60s → register + install argv, success message\n' "confirmed install shells out claude via the nonce path"
 else
   FAIL=$((FAIL + 1)); printf '  FAIL %-60s → exit=%s call1=%s call2=%s out=%s\n' "confirmed install shells out claude via the nonce path" "$CODE_OK" "$CALL1" "$CALL2" "$OUT_OK"

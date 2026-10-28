@@ -25,8 +25,8 @@ This quick start describes the required software you must install, how to author
    ```
    Alternatively, install from the Salesforce-hosted marketplace:
    ```text
-   /plugin marketplace add forcedotcom/sf-skills
-   /plugin install salesforce-development@salesforce
+   /plugin marketplace add guillermolopezSFDC/sf-skills
+   /plugin install salesforce-development@gla_salesforce
    ```
 
 4. (Optional) Validate your environment:
@@ -51,7 +51,7 @@ Once you're all set up, use natural language to describe what you want to do; th
 ## Verify, Update, and Uninstall the Plugin
 
 - **Verify:** `/plugin` lists `salesforce-development`. `/salesforce-development:status` shows the org/project banner. `"${CLAUDE_PLUGIN_ROOT}"/bin/lsp-doctor` checks the bundled language-server host.
-- **Update:** if you installed from `claude-plugins-official`, updates happen automatically; to update manually run `/plugin update salesforce-development@claude-plugins-official`. If you installed from the `salesforce` marketplace, run `/plugin marketplace update salesforce` then `/plugin update salesforce-development@salesforce`.
+- **Update:** if you installed from `claude-plugins-official`, updates happen automatically; to update manually run `/plugin update salesforce-development@claude-plugins-official`. If you installed from the `salesforce` marketplace, run `/plugin marketplace update salesforce` then `/plugin update salesforce-development@gla_salesforce`.
 - **Uninstall:** `/plugin uninstall salesforce-development@claude-plugins-official` (or `@salesforce`, matching however you installed it). If you added the `salesforce` marketplace, also run `/plugin marketplace remove salesforce`.
 
 ## What's Included
@@ -100,10 +100,10 @@ machine is that numeric rating, tagged the same coarse way as every other teleme
 ### Install, enable and uninstall
 
 Register a local checkout with `codex plugin marketplace add <repository-checkout> --json`, then
-install with `codex plugin add salesforce-development@salesforce --json`; repeating that add
+install with `codex plugin add salesforce-development@gla_salesforce --json`; repeating that add
 command refreshes the installed files. Enable or disable the plugin through the Codex setting
-`plugins."salesforce-development@salesforce".enabled`, and uninstall with
-`codex plugin remove salesforce-development@salesforce --json`. Start a new Codex session after
+`plugins."salesforce-development@gla_salesforce".enabled`, and uninstall with
+`codex plugin remove salesforce-development@gla_salesforce --json`. Start a new Codex session after
 any of these changes. The package declares its Codex hooks separately from the Claude manifest;
 review and trust them through Codex `/hooks` before relying on their safety checks.
 

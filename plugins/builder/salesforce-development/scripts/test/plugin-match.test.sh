@@ -26,7 +26,7 @@ FAIL=0
 # as the sole uninstalled candidate so the render + empty-result assertions do not depend
 # on the developer's real ~/.claude enabledPlugins.
 CFG="$(mktemp -d)"
-printf '{"enabledPlugins":{"experience-lwc@salesforce":true,"experience-react@salesforce":true}}' \
+printf '{"enabledPlugins":{"experience-lwc@gla_salesforce":true,"experience-react@gla_salesforce":true}}' \
   > "$CFG/settings.json"
 export CLAUDE_CONFIG_DIR="$CFG"
 # Hermetic session: the tranche cases below deliberately omit --session-id to

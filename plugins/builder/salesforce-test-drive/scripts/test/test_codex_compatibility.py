@@ -100,7 +100,7 @@ class HostRulesTests(unittest.TestCase):
         for needle in (
             "<PLUGIN_ROOT>/../../salesforce-development", ".codex-plugin/plugin.json",
             "SF_AGENT_CLIENT=codex", "--client codex", "test-drive-mark start", "test-drive-mark done",
-            "numbered", "Not now — exit", "codex plugin add salesforce-development@salesforce --json",
+            "numbered", "Not now — exit", "codex plugin add salesforce-development@gla_salesforce --json",
             "new Codex session", "SF_TARGET_ORG", "confirm production deploy to <alias>",
             "--instrument",
         ):

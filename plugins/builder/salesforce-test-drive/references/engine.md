@@ -104,7 +104,7 @@ auto-install the companion, so **always verify it at runtime**:
    > Test drives build on the **salesforce-development** plugin. Install it, then re-run this command:
    > ```text
    > /plugin marketplace add forcedotcom/sf-skills
-   > /plugin install salesforce-development@salesforce
+   > /plugin install salesforce-development@gla_salesforce
    > ```
 3. If present, continue.
 
