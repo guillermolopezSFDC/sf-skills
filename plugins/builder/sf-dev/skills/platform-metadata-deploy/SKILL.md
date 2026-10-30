@@ -1,6 +1,6 @@
 ---
 name: platform-metadata-deploy
-description: "Deploy metadata to development orgs (sandboxes and scratch orgs) with sf CLI v2: validate or dry-run, deploy, report status, handle test levels and failures, and run destructive deploys (destructiveChanges.xml) to remove components. Trigger on deploying, validating, or deleting metadata from an org. DO NOT TRIGGER for writing Apex (use platform-apex-generate), creating scratch orgs (use dx-org-manage), or deploys to Production."
+description: "Deploy metadata to Salesforce orgs (primarily sandboxes and scratch orgs; production only as an explicit, confirmed exception) with sf CLI v2: validate or dry-run, deploy, report status, handle test levels and failures, and run destructive deploys (destructiveChanges.xml) to remove components. Trigger on deploying, validating, or deleting metadata from an org. DO NOT TRIGGER for writing Apex (use platform-apex-generate), creating scratch orgs (use dx-org-manage)."
 metadata:
   version: "1.2"
   domains: ["Platform", "Developer Experience"]
@@ -52,7 +52,7 @@ Delegate elsewhere when the user is:
 - Use **`sf` CLI v2 only**.
 - On non-source-tracking orgs, deploy/retrieve commands require an explicit scope such as `--source-dir`, `--metadata`, or `--manifest`.
 - Prefer **`--dry-run` first** before real deploys.
-- **Production is out of scope for this skill.** If the target org classifies as production (or unknown), stop and tell the user: this plugin deploys only to sandboxes and scratch orgs. Do not run `sf project deploy` against it.
+- **Production is an exception path, not the default.** Never run `sf project deploy start` against a production org. Only if the user explicitly asks for a production deploy, follow [production-deploys.md](production-deploys.md) (server-side validation, then quick deploy behind an explicit confirmation). If the target is unknown, ask first.
 - For Flows, deploy safely and activate only after validation.
 - Keep test-data creation guidance delegated to **`platform-data-manage`** after metadata is validated or deployed.
 
@@ -93,7 +93,7 @@ test -f sfdx-project.json
 ### 1. Preflight
 Confirm auth, repo shape, package directories, and target scope.
 
-### 1a. Classify the target org (refuse production)
+### 1a. Classify the target org (routes prod vs non-prod)
 
 Before any deploy, classify the target from its `sf org list` record — the path forks on whether the org is **production**. Do NOT classify from `sf org display`: it reports only a plain My Domain and omits the sandbox/scratch/trial fields, so a Sandbox-or-Demo Org (SDO) is misclassified as production (forcedotcom/sf-skills#356). The `sf org list` record carries the real classification booleans. Pass `--skip-connection-status` so this stays a local read that does not refresh an OAuth token per authenticated org (forcedotcom/sf-skills#349):
 
@@ -109,7 +109,7 @@ Find the record whose `alias`, `username`, or `orgId` matches the target, then c
 Anything else is **production** — including a **Dev Hub** (`isDevHub` is `true`) that shows none of the above signals, since Dev Hub is normally enabled in the customer's own production org. If no record matches or the record has no usable info (no `instanceUrl` and none of the flags), treat it as **unknown** and ask the user before proceeding, rather than assuming production or non-production.
 
 - **Non-production** → the dry-run + deploy path (steps 2–6).
-- **Production** → stop. Do not validate or deploy; explain that production deploys are not supported by this plugin.
+- **Production** → only on the user's explicit request, via [production-deploys.md](production-deploys.md). Never run `sf project deploy start` against production.
 
 ### 2. Validate first (non-production)
 ```bash
@@ -249,4 +249,5 @@ Next step: <safe follow-up action>
 
 ## Additional guides
 
+- [Production deploys (validate → quick deploy)](production-deploys.md)
 - [Destructive deploy (destructiveChanges.xml)](destructive-deploy.md)
