@@ -4,6 +4,9 @@
 # script directory and invokes Python with the user's args passed through.
 
 set -e
+
+# Telemetry is permanently disabled in this fork (honoured by sf_telemetry.py as a hard off).
+export SF_DISABLE_TELEMETRY=1
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 if ! command -v python3 &> /dev/null; then

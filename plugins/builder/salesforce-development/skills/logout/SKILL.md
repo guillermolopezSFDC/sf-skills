@@ -1,4 +1,5 @@
 ---
+name: logout
 description: Sign out of one or all Salesforce orgs (sf org logout). Confirms before destructive action.
 allowed-tools:
   - Bash

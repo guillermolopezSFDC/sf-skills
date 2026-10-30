@@ -60,8 +60,6 @@ Once you're all set up, use natural language to describe what you want to do; th
 
 | Area | Skills |
 |------|--------|
-| **Discovery** | `platform-capability-search` — Public-channel overview of 102 released and 40 foundation capabilities (29 overlap; 113 visible), domain drilldown, skill detail with hash provenance, compact machine index, pinned one-step enable guidance, and explicitly on-demand cached org-feature detection |
-| **Environment** | `platform-environment-validate` — Prerequisite scan (Salesforce CLI, Code Analyzer, Node, NPM, Git, MCP, source tracking) with guided installation and update |
 | **Project and org lifecycle** | `dx-project-create` — Scaffold a new Salesforce DX project from scratch (template → generate → relocate → auth → default → source tracking); `dx-org-manage` — Create scratch orgs, take org snapshots, open orgs in the browser |
 | **Apex** | `platform-apex-generate`, `platform-apex-anonymous-run` (anonymous Apex + debug-log capture), `platform-apex-test-generate`, `platform-apex-test-run`, `platform-apex-logs-debug` |
 | **Automation** | `automation-flow-generate` — Screen, Autolaunched, Record-Triggered, and Scheduled Flows |
@@ -75,18 +73,11 @@ Once you're all set up, use natural language to describe what you want to do; th
 ### What Else Is in the Box
 
 - **Agents** — `salesforce-dev`, the primary Salesforce development agent (activates automatically in Salesforce projects — `sfdx-project.json` present — and routes requests skills-first, then SF CLI, then direct API as a last resort). Code-analysis and Well-Architected review — the `dx-code-analyzer-*` skills, `platform-architecture-analyze`, and the read-only `architecture-review` agent — now live in the separate **salesforce-code-quality** plugin.
-- **Slash commands** — `/salesforce-development:discover` (computed public-channel capability overview/drilldown, `plugins <text>` for on-demand uninstalled-plugin matching, and optional on-demand `features [--target-org <alias>] [--refresh] [--json]`), `:plugin-install` (one-confirmation install for a trusted same-session marketplace recommendation; source confirmation for anything else), `:plugin-recommendations` (view or change how readily uninstalled plugins get proposed), `:telemetry`, `:setup`, `:status`, `:org`, `:login`, `:logout`, `:set-default`, `:project`, `:reset-source-tracking`, `:welcome`, `:feedback` (manual-only — see [Feedback](#-feedback) below).
+- **Slash commands** — `/salesforce-development:setup`, `:status`, `:login`, `:logout`, `:set-default` and `:reset-source-tracking`.
 - **MCP servers** — `salesforce-api-context` and `salesforce-metadata-experts` (API/metadata guidance), and `salesforce-lsp`, a local host that lazily spawns the **Apex** and **SOQL** language servers and exposes their semantic capabilities as MCP tools. See the `platform-lsp-integrate` skill for the tool contract.
 - **Hooks** — org-context detection on session start; a production deploy-safety gate and an Apex pre-deploy diagnostics gate on `sf project deploy`; and skills-first advisories that, when no installed skill matches, also propose an uninstalled plugin whose curated description does.
 
-Your progress through **Connect → Project → Build → Test → Deploy → Observe** is tracked from real, successful actions in your project — never assumed. Run `/salesforce-development:discover journey inspect` to review it, or `journey reset` to clear it.
-
-## 💬 Feedback
-
-Run `/salesforce-development:feedback` any time to tell us how things are going. It's a manual-only
-command (it never shows up in the model's own suggestions) that asks a single 1-5 satisfaction
-question right in chat and records it as a local telemetry event — the only thing that leaves your
-machine is that numeric rating, tagged the same coarse way as every other telemetry event.
+Your progress through **Connect → Project → Build → Test → Deploy → Observe** is tracked from real, successful actions in your project — never assumed.
 
 ## More Information
 
@@ -133,7 +124,6 @@ wording instead of `/salesforce-development:<name>`.
 | `SF_TARGET_ORG` / `SFDX_TARGET_ORG` | The org the MCP servers and the deploy gate use. When both are set they must agree. Unset, the MCP launcher uses the project's own `.sf/config.json` `target-org` (or `.sfdx/sfdx-config.json` `defaultusername`) (`.sf/config.json` wins when both name an org) and refuses to start when there is none; run `sf config set target-org <alias>` in the project or set the variable in the MCP server's environment. |
 | `SF_PLUGIN_UI_MODE` | `full`, `plain` or `off`; selects the presentation mode ahead of the other settings. Safety and routing guidance stay active when it is `off`. |
 | `SF_AGENT_CLIENT` | Set to `codex` on plugin runtime commands run from the shell (for example `scripts/sf-context feedback-record <1-5>`) so they use the Codex session identity. |
-| `SFDX_FEEDBACK` | `1` enables the end-of-turn numeric feedback nudge; it never asks for typed comments. |
 
 ### Behavior and known limits
 
@@ -164,15 +154,12 @@ wording instead of `/salesforce-development:<name>`.
   calls proceed with a warning. Callback startup failures and host timeouts are outside the adapter's
   fail-closed guarantee. Remote API-context and metadata MCP servers need
   credential access inside the host sandbox; CLI and packaged context-file fallbacks remain.
-- Codex command adapters reference the packaged shared workflows. The feedback command surface
-  does not collect a rating. Login checks installed CLI support before offering device-code
+- Codex command adapters reference the packaged shared workflows. Login checks installed CLI support before offering device-code
   login. Login, logout, defaults and source-tracking reset keep their confirmation and
   cancellation steps.
 
 ### Changes visible in Claude Code
 
-- `/salesforce-development:discover` and the `platform-capability-search` skill name the
-  `--client codex` form of the discovery command.
 - The deploy gate reads the target org with the same parser as its command check (a mid-word `#`
   is not a comment, heredoc bodies are read, and an unreadable target flag is denied). It checks
   every deploy or delete in the command, and denies one that spans more than one org. The

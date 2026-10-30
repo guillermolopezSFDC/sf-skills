@@ -2493,7 +2493,7 @@ def _record_update_decision(version: str, reason: str) -> bool:
 #
 # A single cached verdict written by the check-tools chokepoint. Both entry
 # points to a scan — the /salesforce-development:setup command and the
-# platform-environment-validate skill — funnel through cmd_check_tools, so
+# setup skill — funnel through cmd_check_tools, so
 # writing it there populates the same state no matter how the scan was
 # triggered. The getting-started welcome reads it CHEAPLY (no subprocess) so it
 # doesn't nudge a newcomer toward "create a project" before the toolchain is
@@ -5867,7 +5867,7 @@ def cmd_check_tools() -> int:
 
     # Cache a coarse readiness verdict for the front-of-journey gate. This is the
     # chokepoint both entry points hit (/salesforce-development:setup and the
-    # platform-environment-validate skill), so the verdict is written no matter
+    # setup skill), so the verdict is written no matter
     # how the scan was triggered.
     #
     # "Safe to scaffold" is deliberately NOT "all green". Two lists:
@@ -5913,7 +5913,7 @@ def cmd_check_tools() -> int:
 _READINESS_WIDTH = 80
 _READINESS_RULE = "─" * _READINESS_WIDTH
 _READINESS_HEADER = " Ready to build on Salesforce?   checking your toolchain…"
-_READINESS_SKILL_TAG = "(skill: platform-environment-validate)"
+_READINESS_SKILL_TAG = "(skill: setup)"
 _READINESS_DOTS = {"ok": "🟢", "warn": "🟡", "critical": "🔴", "info": "ℹ️"}
 _READINESS_WORDS = {"ok": "READY", "warn": "WARN", "critical": "BLOCKED", "info": "INFO"}
 # Left-pad names to the longest ("Salesforce MCP (endpoint)" = 25) plus a 2-space
@@ -6043,7 +6043,7 @@ def _readiness_wayfinding_footer(rows: list, *, color: bool = False) -> str:
 
 def render_readiness_text(report: dict, *, color: bool = False) -> str:
     """The framed toolchain-readiness banner as a string — the deterministic Tier-1
-    sibling of what the platform-environment-validate skill used to hand-render.
+    sibling of what the setup skill used to hand-render.
 
     Input is the check-tools report ({"tools": [...], "diagnostic": {...}?}). Rows
     render in the report's fixed order (Salesforce CLI, Code Analyzer, Node.js, NPM,
@@ -6069,7 +6069,7 @@ def render_readiness_text(report: dict, *, color: bool = False) -> str:
 
 def cmd_readiness_banner() -> int:
     """Print the deterministic readiness banner to stdout — the fallback the
-    platform-environment-validate skill invokes when the PostToolUse paint hook did
+    setup skill invokes when the PostToolUse paint hook did
     NOT fire (an older Claude Code build, or a paint fallback), so the skill never
     hand-renders the banner from the check-tools JSON. Row order, status words, the
     footer verdict, and the wayfinding Next step are all decided once, here, by the
@@ -7295,7 +7295,7 @@ def cmd_scaffold_gate() -> int:
         if resolve_executable("sf") is None:
             emit("PreToolUse", "", decision="deny", reason=(
                 _READINESS_GATE_TAG + " The Salesforce CLI (`sf`) isn't on your PATH, so "
-                "`sf project generate` will fail. Run the platform-environment-validate skill "
+                "`sf project generate` will fail. Run the setup skill "
                 "(or /salesforce-development:setup) to get the SF CLI, Node, and git ready, then "
                 "scaffold."))
             return 0
@@ -7319,7 +7319,7 @@ def cmd_scaffold_gate() -> int:
             emit("PreToolUse", "", decision="deny", reason=(
                 _READINESS_GATE_TAG + f" Your last environment check found a broken prerequisite "
                 f"({missing}) that would stop the project you create from building or deploying. Fix "
-                "that and re-run the platform-environment-validate skill (or "
+                "that and re-run the setup skill (or "
                 "/salesforce-development:setup) before scaffolding. Advisory warnings on their own "
                 "(e.g. a non-LTS Node, an org-scoped source-tracking note) never block — only a "
                 "genuinely broken prerequisite does."))
@@ -7329,7 +7329,7 @@ def cmd_scaffold_gate() -> int:
         emit("PreToolUse", (
             "Environment-readiness: the local toolchain hasn't been verified this session, so "
             "`sf project generate` is proceeding unchecked. Consider running the "
-            "platform-environment-validate skill (or /salesforce-development:setup) first to "
+            "setup skill (or /salesforce-development:setup) first to "
             "confirm the SF CLI, Node, and git are ready — a missing prerequisite would surface "
             "later at build or deploy time, not now."))
         return 0
@@ -9615,28 +9615,6 @@ def _status_paint_note(state: dict, candidate: Optional[object] = None) -> str:
         "Do not reproduce, redraw, restate, or re-run status or journey.\n"
         "Add only a short project-relevant interpretation when useful.\n"
         + _journey_paint_facts(state, candidate=candidate)
-    )
-
-
-def _org_paint_note() -> str:
-    """Model-facing note after the connected-org band paints on the visible channel
-    for `/salesforce-development:org`. No journey facts — this subset surface shows
-    only the org band, not the journey nudge."""
-    return (
-        "The connected Salesforce org details are already visible on screen.\n"
-        "Do not reproduce, redraw, restate, or re-run the org readout.\n"
-        "Add only a short interpretation when useful."
-    )
-
-
-def _project_paint_note() -> str:
-    """Model-facing note after the project-inventory band paints on the visible
-    channel for `/salesforce-development:project`. No journey facts — this subset
-    surface shows only the project band, not the journey nudge."""
-    return (
-        "The local Salesforce project inventory is already visible on screen.\n"
-        "Do not reproduce, redraw, restate, or re-run the project readout.\n"
-        "Add only a short interpretation when useful."
     )
 
 
@@ -12465,7 +12443,7 @@ def _connect_flow_note(root: Path) -> str:
         return (
             "The user wants to connect an org, but the Salesforce CLI (`sf`) is NOT on their PATH — an "
             "`sf org login` would fail with `command not found`. Do NOT attempt a login. First get the "
-            "environment ready: run the platform-environment-validate skill (or the "
+            "environment ready: run the setup skill (or the "
             "/salesforce-development:setup command) to install and verify the SF CLI, Node, and git, "
             "then connect once `sf` resolves."
         )
@@ -12593,7 +12571,7 @@ def _create_flow_note() -> str:
         "The user asked to create / set up a new Salesforce project — the OUTCOME they want is a "
         "scaffolded DX project, so drive toward that; do NOT stop at describing options or dump the "
         "capability catalog. Two steps: (1) creating a project needs a working toolchain — first verify "
-        "the environment by running the platform-environment-validate skill (or the "
+        "the environment by running the setup skill (or the "
         "/salesforce-development:setup command) to confirm the SF CLI, Node, and git and install "
         "anything missing BEFORE scaffolding, so a missing prerequisite surfaces here with a reason "
         "rather than as a raw failure at generate time; (2) help them settle on a DIRECTION for what "
@@ -12627,7 +12605,7 @@ def _environment_check_note() -> str:
     chokepoint; the scan runs on demand via the skill/command, never in this hook (I4)."""
     return (
         "The user wants to set up or check their development environment. Run the "
-        "platform-environment-validate skill (or the /salesforce-development:setup command) — the single "
+        "setup skill (or the /salesforce-development:setup command) — the single "
         "~9s readiness check that verifies the SF CLI, Node, npm, git, the Salesforce MCP servers, and "
         "source tracking, then paints the readiness banner listing anything that needs attention. Do NOT "
         "hand-roll the individual tool checks yourself (that command is the one chokepoint), and do NOT "
@@ -13013,50 +12991,6 @@ def _status_command_paint(root: Path) -> tuple[str, str]:
     return _status_paint_note(state, candidate=candidate), surface
 
 
-def _welcome_command_paint(root: Path) -> tuple[str, str]:
-    """`/salesforce-development:welcome`: the full session banner WITH the HEADLESS logo
-    lockup — the same surface the connected SessionStart banner paints (what the command
-    body ran as bare `sf-context status` before). `render_status_surface(logo=True)`."""
-    if not (root / "sfdx-project.json").exists():
-        return _no_project_note(), _render_no_project_surface()
-    state, org = _resolve_position_and_org(root)
-    active_org = (org.get("alias"), org.get("username")) if org else None
-    # journey-nudges Phase 5/7: no session_id in scope here, so this is the raw,
-    # unsuppressed ladder pick (same convention as every other no-session_id caller);
-    # resolved before the render call so the SAME pick feeds both the visible nudge
-    # slot below and the model-facing note, no re-probe.
-    candidate = _select_inline_nudge(state, root, org)
-    surface = render_status_surface(
-        state, org, project_meta(), project_stats(), git_status_line(),
-        _live_mcp_summary(active_org=active_org),
-        color=_banner_color_enabled(), logo=True, candidate=candidate,
-    )
-    return _status_paint_note(state, candidate=candidate), surface
-
-
-def _org_command_paint(root: Path) -> tuple[str, str]:
-    """`/salesforce-development:org`: the connected-org band ONLY, colored — the exact
-    org sub-band of the status surface, degrading through the identical honest lines
-    (`_status_org_group`) when no org resolves. Project-independent: an org can be a
-    global default. Skips the MCP probe when there is no org (the degraded line omits it)."""
-    state, org = _resolve_position_and_org(root)
-    mcp = (_live_mcp_summary(active_org=(org.get("alias"), org.get("username")))
-           if org else "")
-    surface = "\n".join(render_band(
-        _status_org_group(state, org, mcp), color=_banner_color_enabled()))
-    return _org_paint_note(), surface
-
-
-def _project_command_paint(root: Path) -> tuple[str, str]:
-    """`/salesforce-development:project`: the project inventory band ONLY, colored — the
-    exact project sub-band of the status surface. No org read."""
-    if not (root / "sfdx-project.json").exists():
-        return _no_project_note(), _render_no_project_surface()
-    surface = "\n".join(render_project_band(
-        project_meta(), project_stats(), git_status_line(), color=_banner_color_enabled()))
-    return _project_paint_note(), surface
-
-
 # The status-surface family + welcome: command_name → painter. Each painter is a pure
 # render step that ALWAYS returns (note, present-surface) — the no-project / no-org
 # forks live HERE in the deterministic layer, never in the command body, so every body
@@ -13065,9 +12999,6 @@ def _project_command_paint(root: Path) -> tuple[str, str]:
 # it branches on args (overview vs nudge vs silent); these four take no paint-affecting args.
 _STATUS_FAMILY_PAINTERS = {
     "salesforce-development:status": _status_command_paint,
-    "salesforce-development:welcome": _welcome_command_paint,
-    "salesforce-development:org": _org_command_paint,
-    "salesforce-development:project": _project_command_paint,
 }
 
 

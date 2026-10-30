@@ -14,7 +14,7 @@ the status of this project?", "where am I?", "what can I do here?"):
 
 | Mode | Ambient SessionStart and wayfinding | Natural-language status / orientation / capability questions |
 |---|---|---|
-| `full` (default) | signature banner and graded nudge | full status surface, welcome, or capability overview |
+| `full` (default) | signature banner and graded nudge | full status surface or capability overview |
 | `plain` | accessible semantic text, without ANSI color or journey glyphs | the same plain project / stage / next-step text (capability overview unchanged) |
 | `off` | hidden | nothing painted and no guidance added to Claude's reply; Claude answers on its own |
 

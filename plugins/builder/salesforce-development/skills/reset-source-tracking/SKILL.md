@@ -1,4 +1,5 @@
 ---
+name: reset-source-tracking
 description: Reset source tracking for the target org — tells the CLI to forget all tracked changes so the next push/pull treats the full org as new state. Destructive on shared sandboxes. Requires explicit confirmation before executing.
 allowed-tools:
   - Bash

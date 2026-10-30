@@ -35,9 +35,7 @@ EXPECTED_SERVERS = frozenset({
     "salesforce-api-context", "salesforce-metadata-experts", "salesforce-lsp",
 })
 EXPECTED_COMMANDS = frozenset({
-    "discover", "feedback", "login", "logout", "org", "plugin-install",
-    "plugin-recommendations", "project", "reset-source-tracking", "set-default",
-    "setup", "status", "telemetry", "welcome",
+    "login", "logout", "reset-source-tracking", "set-default", "setup", "status",
 })
 
 
@@ -45,7 +43,7 @@ def _inert_feedback(body: str) -> bool:
     return ('unsupported' in body and 'Explain this limitation and stop.' in body
             and 'Do not ask for a' in body
             and not any(token in body for token in
-                        ('/commands/feedback.md', 'feedback-eligibility', 'feedback-record')))
+                        ('/skills/feedback/SKILL.md', 'feedback-eligibility', 'feedback-record')))
 
 
 def _load(path: Path) -> dict:
@@ -76,7 +74,7 @@ def verify(plugin_root: Path, require_command_projection: bool = False) -> dict[
         failures.append("Codex manifest does not select its command adapters")
     command_dir = root / "codex-commands"
     if {p.stem for p in command_dir.glob('*.md')} != EXPECTED_COMMANDS:
-        failures.append("Codex adapter set differs from the expected fourteen surfaces")
+        failures.append("Codex adapter set differs from the expected six surfaces")
     projected = root / ".codex-plugin/migrated-command-skills"
     for name in sorted(EXPECTED_COMMANDS):
         adapter = command_dir / (name + '.md')
@@ -87,7 +85,7 @@ def verify(plugin_root: Path, require_command_projection: bool = False) -> dict[
         body = adapter.read_text(encoding='utf-8')
         if '$ARGUMENTS' in body:
             failures.append(f"unmigratable argument token in Codex adapter: {name}")
-        if name != 'feedback' and f'/commands/{name}.md' not in body:
+        if name != 'feedback' and f'/skills/{name}/SKILL.md' not in body:
             failures.append(f"missing shared workflow reference: {name}")
         if name == 'feedback' and not _inert_feedback(body):
             failures.append("feedback adapter does not preserve inert collection behavior")
@@ -100,7 +98,7 @@ def verify(plugin_root: Path, require_command_projection: bool = False) -> dict[
             generated = skill.read_text(encoding='utf-8')
             if len(generated.encode('utf-8')) > 4000:
                 failures.append(f"migrated command exceeds verified host byte limit: {name}")
-            if name != 'feedback' and f'/commands/{name}.md' not in generated:
+            if name != 'feedback' and f'/skills/{name}/SKILL.md' not in generated:
                 failures.append(f"migrated command lost shared workflow reference: {name}")
             if name == 'feedback' and not _inert_feedback(generated):
                 failures.append("migrated feedback surface lost its unsupported boundary")

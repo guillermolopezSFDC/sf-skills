@@ -1,4 +1,5 @@
 ---
+name: set-default
 description: Set the project's target-org (the org that all sf commands run against by default). If no org is named, lists the authenticated orgs for the user to pick.
 allowed-tools:
   - Bash

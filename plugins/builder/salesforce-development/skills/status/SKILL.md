@@ -1,4 +1,5 @@
 ---
+name: status
 description: Show the Salesforce project banner — connected org, edition, API, project metadata stats, and MCP server status.
 allowed-tools:
   - Bash

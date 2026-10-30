@@ -1,4 +1,5 @@
 ---
+name: login
 description: Authenticate to a new Salesforce org via the browser (sf org login web). Optionally set the org as the project's default target.
 allowed-tools:
   - Bash
