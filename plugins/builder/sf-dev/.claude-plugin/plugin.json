@@ -1,0 +1,22 @@
+{
+  "name": "sf-dev",
+  "displayName": "Salesforce Development",
+  "version": "0.1.0",
+  "description": "Salesforce development-org toolkit: Apex (generate, anonymous, tests), data create/update/delete, Flow, declarative metadata generators, deploy/validate/quick/destructive deploy, scratch-org management and source-tracking reset. Writes to the org — use against sandboxes and scratch orgs.",
+  "author": {
+    "name": "Salesforce"
+  },
+  "license": "Apache-2.0",
+  "keywords": [
+    "salesforce",
+    "apex",
+    "flow",
+    "metadata",
+    "deploy",
+    "data"
+  ],
+  "dependencies": [
+    "sf-core"
+  ],
+  "skills": "./skills/"
+}

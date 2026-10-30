@@ -1,12 +1,12 @@
 ---
 name: experience-ui-bundle-custom-app-generate
-description: "MUST activate when the project contains a uiBundles/*/src/ directory and the task involves creating or configuring a Custom Application for hosting a UI bundle in Lightning Experience. Use this skill when creating a CustomApplication metadata record to surface the UI bundle in the App Launcher. Activate when files matching applications/*.app-meta.xml exist and need modification, or when the user wants to expose their app via the Lightning App Launcher without a Digital Experience Site. Do NOT use platform-custom-application-generate for this — UI bundle apps do not use tabs, action overrides, or flexipages."
+description: "MUST activate when the project contains a uiBundles/*/src/ directory and the task involves creating or configuring a Custom Application for hosting a UI bundle in Lightning Experience. Use this skill when creating a CustomApplication metadata record to surface the UI bundle in the App Launcher. Activate when files matching applications/*.app-meta.xml exist and need modification, or when the user wants to expose their app via the Lightning App Launcher without a Digital Experience Site. Do NOT use platform-ui-generate for this — UI bundle apps do not use tabs, action overrides, or flexipages."
 metadata:
   version: "1.0"
   domains: ["Experience", "Platform"]
   minApiVersion: "65.0"
   relatedSkills:
-    - "platform-custom-application-generate"
+    - "platform-ui-generate"
   cliTools:
     - tool: ["node"]
       semver: ">=18.0.0"

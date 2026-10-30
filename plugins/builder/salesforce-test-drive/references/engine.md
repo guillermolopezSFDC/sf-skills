@@ -62,34 +62,34 @@ you what to capture during the build itself; this just makes sure logging is liv
 
 ## Step 0 — Companion plugin check (runtime coupling)
 
-A test drive choreographs the skills in the **`salesforce-development`** plugin (Apex, metadata,
+A test drive choreographs the skills in the **`sf-core`** plugin (Apex, metadata,
 deploy, custom objects/fields, permission sets, etc.) — the framework's base companion, which
-**every** drive needs. Some drives also need capability plugins that `salesforce-development` does
+**every** drive needs. Some drives also need capability plugins that `sf-core` does
 **not** ship: most notably Agentforce authoring (`agentforce-generate`), which lives in the separate
 **`agentforce-adlc`** plugin. Those per-drive plugins are declared in the catalog entry's
 `requires.plugins` and gated in **Step 4** (which can install a missing one via Dynamic Plugin
 Loading) — not here. This plugin declares the base companion in `plugin.json`
-(`dependencies: ["salesforce-development"]`) so the repo DAG and any host that honors plugin
+(`dependencies: ["sf-core"]`) so the repo DAG and any host that honors plugin
 dependencies can see the coupling. Claude Code still does not reliably refuse an install or
 auto-install the companion, so **always verify it at runtime**:
 
-1. Check whether `salesforce-development` is installed. Say what you're doing first (e.g. "Checking your
+1. Check whether `sf-core` is installed. Say what you're doing first (e.g. "Checking your
    setup…") so this first probe's cold-start pause doesn't look like a hang, then run a non-interactive
    probe:
    ```bash
-   ls "<PLUGIN_ROOT>/../salesforce-development/.claude-plugin/plugin.json" 2>/dev/null && echo COMPANION_PRESENT || echo COMPANION_ABSENT
+   ls "<PLUGIN_ROOT>/../sf-core/.claude-plugin/plugin.json" 2>/dev/null && echo COMPANION_PRESENT || echo COMPANION_ABSENT
    ```
    Replace `<PLUGIN_ROOT>` with the absolute path the command gave you **before** running this — never
    leave the literal `${CLAUDE_PLUGIN_ROOT}` in the command, or the shell expands it to nothing and the
    probe falsely reports `COMPANION_ABSENT`. Before trusting a `COMPANION_ABSENT`, sanity-check that the
    path you actually ran begins with `/` (i.e. you did substitute `<PLUGIN_ROOT>`) — a literal
    `<PLUGIN_ROOT>` or an empty prefix means the probe is lying, not that the companion is missing. (And
-   if the probe is inconclusive but this session already shows `salesforce-development` loaded — its
+   if the probe is inconclusive but this session already shows `sf-core` loaded — its
    banner or commands are present — treat the companion as present.)
    (Both plugins ship from the same `salesforce` marketplace, so when installed normally they are
    siblings under the same plugins root. That on-disk adjacency is also true in a `--plugin-dir` dev
    load, so a `COMPANION_PRESENT` from the path check alone does **not** prove the companion's skills
-   were registered into *this* session — if the drive later can't invoke a `salesforce-development`
+   were registered into *this* session — if the drive later can't invoke a `sf-core`
    skill, tell the user to load/install that plugin too and re-run.) Because that path check alone
    can't prove Skill-tool registration, immediately follow it with one lightweight invocability probe:
    call the Skill tool once against `platform-soql-query` (the same companion skill Step 4 already
@@ -101,10 +101,10 @@ auto-install the companion, so **always verify it at runtime**:
    should consult this fact before attempting their own Skill-tool call, not re-probe and pay for
    another failed round trip at each site.
 2. If the companion is **absent**, stop and guide the user — do not try to run a drive without it:
-   > Test drives build on the **salesforce-development** plugin. Install it, then re-run this command:
+   > Test drives build on the **sf-core** plugin. Install it, then re-run this command:
    > ```text
    > /plugin marketplace add forcedotcom/sf-skills
-   > /plugin install salesforce-development@gla_salesforce
+   > /plugin install sf-core@gla_salesforce
    > ```
 3. If present, continue.
 
@@ -132,7 +132,7 @@ your build tools…", then:
    run the companion's scan **script** directly — it's a sibling of this plugin (same path convention as
    the Step 0 probe):
    ```bash
-   "<PLUGIN_ROOT>/../salesforce-development/scripts/sf-context" check-tools
+   "<PLUGIN_ROOT>/../sf-core/scripts/sf-context" check-tools
    ```
    Substitute the absolute `PLUGIN_ROOT`; it resolves to the companion's `scripts/sf-context` and prints
    the same framed banner. If **neither** the skill nor the script can run, don't hard-block the drive on
@@ -288,8 +288,8 @@ minimum API version, provisioning tier). Check them **before** launching, and su
 actionable feedback — this is the core personality of the plugin, not an error dump.
 
 **First, gate on required plugins — and use Dynamic Plugin Loading to fill a gap instead of
-dead-ending.** Beyond the base `salesforce-development` companion (already verified in Step 0), a
-drive may need capability plugins that `salesforce-development` does **not** ship — the
+dead-ending.** Beyond the base `sf-core` companion (already verified in Step 0), a
+drive may need capability plugins that `sf-core` does **not** ship — the
 service-help-agent drive, for example, needs `agentforce-adlc`, which owns the Agentforce authoring
 skill (`agentforce-generate`). Those are listed in the chosen entry's `requires.plugins`. The build
 launches by *dispatching* those skills from the injected prompt, so a required plugin that isn't
@@ -338,12 +338,12 @@ the middle of the build.
    pure registration gap; skip straight to the reload handoff in point 4. Only when the path probe said
    `PLUGIN_ABSENT` is the plugin genuinely missing — then leverage the companion's Dynamic Plugin Loading
    (DPL) rather than hard-stopping.
-   `salesforce-development` (a hard dependency, so it's present) hosts a guarded install runtime that
+   `sf-core` (a hard dependency, so it's present) hosts a guarded install runtime that
    already knows this plugin from its marketplace catalog. Tell the user plainly that this drive needs
    the `<pluginId>` plugin and that you can install it for them, then run the companion's install
    surface for the **known id** — a cold, self-directed install, no prior proposal needed:
    ```bash
-   "<PLUGIN_ROOT>/../salesforce-development/scripts/sf-context" plugin-install <pluginId>
+   "<PLUGIN_ROOT>/../sf-core/scripts/sf-context" plugin-install <pluginId>
    ```
    - For a plugin whose marketplace source is **external** (a GitHub/URL source, not an exact
      `./plugins/builder/<name>` path in this repo), the guarded runtime does **not** install
@@ -422,7 +422,7 @@ pass the chosen drive's catalog `id`, e.g. `service-help-agent`; never leave a l
 `${CLAUDE_PLUGIN_ROOT}`, which the shell expands to nothing):
 
 ```bash
-"<PLUGIN_ROOT>/../salesforce-development/scripts/sf-context" test-drive-mark start <driveId>
+"<PLUGIN_ROOT>/../sf-core/scripts/sf-context" test-drive-mark start <driveId>
 ```
 
 That writes a project-scoped marker so that if the drive is interrupted and the user later just says
@@ -447,7 +447,7 @@ Then run it as if the user had typed it themselves:
   **continue**.") rather than silently failing.
 - **Execute the build, then stop at a successful deploy.** Choreograph the skills the prompt calls for
   — Agentforce authoring comes from the `agentforce-adlc` plugin's `agentforce-generate` skill, and
-  `salesforce-development` supplies the Apex/metadata/deploy skills around it — and deploy to the
+  `sf-core` supplies the Apex/metadata/deploy skills around it — and deploy to the
   connected org. When the drive deploys an
   AiAuthoringBundle, the correct draft-deploy command is `sf project deploy start --source-dir
   force-app/main/default/aiAuthoringBundles/<name> -o <org-alias>` (per the `agentforce-adlc` plugin's
@@ -547,7 +547,7 @@ Then run it as if the user had typed it themselves:
 **Instrumented mode (`--instrument`).** The harness is already running — you started it at the top of
 this engine (see **Instrumentation**), so setup and gating are already in the log. For the build,
 keep applying it as the spec describes: count every `sf`/`curl`/`python3` call the build makes —
-**including the ones a skills-first `salesforce-development` skill runs on your behalf** (a call routed
+**including the ones a skills-first `sf-core` skill runs on your behalf** (a call routed
 through a skill is still a CLI round-trip the user paid for; don't undercount it just because you didn't
 type it) — log each narrated checkpoint pause (Setup step vs. permission wait), and record any API gaps
 and errors you hit while choreographing the skills. Log the **runtime-user access grant as its own
@@ -614,7 +614,7 @@ Then clear the resume marker — the drive is complete, so there is nothing left
 (substitute the absolute `PLUGIN_ROOT`):
 
 ```bash
-"<PLUGIN_ROOT>/../salesforce-development/scripts/sf-context" test-drive-mark done
+"<PLUGIN_ROOT>/../sf-core/scripts/sf-context" test-drive-mark done
 ```
 
 Like its Step 5 counterpart this is silent fire-and-forget housekeeping — **don't narrate it**, and don't

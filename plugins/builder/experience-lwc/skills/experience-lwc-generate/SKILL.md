@@ -10,7 +10,7 @@ metadata:
     - "automation-flow-generate"
     - "integration-connectivity-generate"
     - "platform-apex-generate"
-    - "platform-apex-test-run"
+    - "platform-apex-test"
     - "platform-metadata-deploy"
   cliTools:
     - tool: ["node"]
@@ -100,7 +100,7 @@ Check:
 Use:
 - [platform-apex-generate](../platform-apex-generate/SKILL.md) for controllers / services
 - [platform-metadata-deploy](../platform-metadata-deploy/SKILL.md) for deployment
-- [platform-apex-test-run](../platform-apex-test-run/SKILL.md) only for Apex-side test loops, not Jest
+- [platform-apex-test](../platform-apex-test/SKILL.md) only for Apex-side test loops, not Jest
 
 ---
 

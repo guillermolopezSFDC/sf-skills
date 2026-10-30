@@ -7,33 +7,46 @@
   },
   "plugins": [
     {
-      "name": "salesforce-development",
-      "source": "./plugins/builder/salesforce-development",
-      "description": "Foundation layer for Salesforce platform development — 37 skills for environment validation, project scaffolding, scratch-org lifecycle, declarative metadata, Apex (author, run anonymous, test, debug), flow automation, SOQL, deploy/retrieve, manifest generation, security, reporting, and generated installed-versus-available capability discovery, plus org-context detection, a production deploy-safety gate, and a bundled Apex + SOQL language server (MCP).",
+      "name": "sf-core",
+      "source": "./plugins/builder/sf-core",
+      "description": "Shared Salesforce foundation, safe against any org including production: environment setup and status, org login/logout/default, API-context and LSP (Apex + SOQL) MCP servers, the salesforce-dev agent, org-context detection, the deploy-safety gate, and read-only tooling (SOQL, metadata retrieve, manifest generation, debug-log analysis). Required by sf-dev.",
       "keywords": [
         "salesforce",
-        "apex",
-        "flow",
+        "setup",
+        "org",
         "soql",
-        "metadata",
-        "deploy",
-        "security"
+        "retrieve",
+        "lsp",
+        "mcp",
+        "deploy-gate"
       ],
       "metadata": {
         "match": {
           "examplePrompts": [
-            "build a flow",
-            "deploy my metadata",
-            "run apex tests"
+            "check my salesforce setup",
+            "log in to my org"
           ],
           "anchorTerms": [
-            "apex",
-            "flow",
-            "metadata",
-            "deploy"
+            "sf cli",
+            "org",
+            "login",
+            "setup"
           ]
         }
       }
+    },
+    {
+      "name": "sf-dev",
+      "source": "./plugins/builder/sf-dev",
+      "description": "Salesforce development-org toolkit: Apex (generate, anonymous, tests), data create/update/delete, Flow, declarative metadata generators, deploy/validate/quick/destructive deploy, scratch-org management and source-tracking reset. Writes to the org — use against sandboxes and scratch orgs.",
+      "keywords": [
+        "salesforce",
+        "apex",
+        "flow",
+        "metadata",
+        "deploy",
+        "data"
+      ]
     },
     {
       "name": "salesforce-code-quality",
@@ -109,7 +122,7 @@
     {
       "name": "salesforce-test-drive",
       "source": "./plugins/builder/salesforce-test-drive",
-      "description": "Take a Salesforce capability for a test drive — pick a curated end-to-end build from a menu (e.g. a Service help agent delivered as a website chat widget) and watch it run start to finish. A guided, rehearsable walkthrough and learning engine that checks readiness, helps connect or provision an org, then choreographs the salesforce-development skills to build the real thing.",
+      "description": "Take a Salesforce capability for a test drive — pick a curated end-to-end build from a menu (e.g. a Service help agent delivered as a website chat widget) and watch it run start to finish. A guided, rehearsable walkthrough and learning engine that checks readiness, helps connect or provision an org, then choreographs the sf-core skills to build the real thing.",
       "keywords": [
         "guided walkthrough",
         "rehearsable build",

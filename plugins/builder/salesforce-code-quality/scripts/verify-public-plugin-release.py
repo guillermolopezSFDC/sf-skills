@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Fail closed when a publishable plugin tree is unsafe or misidentified.
 
-Minimal counterpart to salesforce-development's verify-public-plugin-release.py:
+Minimal counterpart to sf-core's verify-public-plugin-release.py:
 this plugin has no generated capability catalog or protected/uninstalled skill
 descriptions to leak-scan for, so this only enforces the release-tree safety
 invariants (no symlinks/special files, no stray transient dev directories,

@@ -109,7 +109,7 @@ MEDIUM_PATTERNS = [
     # is a naive string match with no live org-edition lookup, so it can both
     # miss a real production org under an unrelated alias and misfire on a
     # sandbox alias containing "prod" -- it's advisory only. Authoritative,
-    # blocking production classification is the salesforce-development plugin's
+    # blocking production classification is the sf-core plugin's
     # `sf-deploy-gate prod-check`, which queries the org itself; this hook does
     # not duplicate that check as a CRITICAL/blocking pattern.
     {

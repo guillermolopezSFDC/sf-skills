@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Salesforce Test Drive Catalog (test-drives.json)",
-  "description": "Contribution-safety grammar for the test-drive catalog. Product teams add one entry per test drive. Entries are strict (additionalProperties: false) so a typo'd field is caught at authoring time rather than silently ignored by the engine; extend the contract by PR to this schema, the same way the skills model vocabulary is extended. The root stays open so catalog-level metadata can be added over time. Value-level policy that a JSON Schema cannot express (prompt file exists on disk, orderedSkills name real skills provided by salesforce-development or a requires.plugins plugin, requires.plugins name real marketplace plugins, owner contact is reachable) is intended to live in a future imperative lint gate — see AUTHORING.md.",
+  "description": "Contribution-safety grammar for the test-drive catalog. Product teams add one entry per test drive. Entries are strict (additionalProperties: false) so a typo'd field is caught at authoring time rather than silently ignored by the engine; extend the contract by PR to this schema, the same way the skills model vocabulary is extended. The root stays open so catalog-level metadata can be added over time. Value-level policy that a JSON Schema cannot express (prompt file exists on disk, orderedSkills name real skills provided by sf-core or a requires.plugins plugin, requires.plugins name real marketplace plugins, owner contact is reachable) is intended to live in a future imperative lint gate — see AUTHORING.md.",
   "version": "0.1",
   "type": "object",
   "additionalProperties": true,
@@ -80,12 +80,12 @@
             "plugins": {
               "type": "array",
               "items": { "type": "string" },
-              "description": "Marketplace plugin ids this drive needs installed BEYOND the base 'salesforce-development' companion (which every drive requires and the engine verifies in Step 0). Example: 'agentforce-adlc', which ships the Agentforce authoring skills (agentforce-generate) — these are NOT part of salesforce-development. The engine checks each id is installed at the top of Step 4; if one is missing it routes into the companion's confirm-then-install (Dynamic Plugin Loading) flow rather than hard-stopping, then has the user run /reload-plugins and re-run. Each name must match a plugin in the Salesforce marketplace catalog."
+              "description": "Marketplace plugin ids this drive needs installed BEYOND the base 'sf-core' companion (which every drive requires and the engine verifies in Step 0). Example: 'agentforce-adlc', which ships the Agentforce authoring skills (agentforce-generate) — these are NOT part of sf-core. The engine checks each id is installed at the top of Step 4; if one is missing it routes into the companion's confirm-then-install (Dynamic Plugin Loading) flow rather than hard-stopping, then has the user run /reload-plugins and re-run. Each name must match a plugin in the Salesforce marketplace catalog."
             },
             "orderedSkills": {
               "type": "array",
               "items": { "type": "string" },
-              "description": "The skills this drive choreographs, in build order — provided either by the base 'salesforce-development' companion or by a plugin declared in requires.plugins (e.g. agentforce-generate comes from agentforce-adlc). Advisory for the engine and reviewers; the prompt is the source of truth for execution."
+              "description": "The skills this drive choreographs, in build order — provided either by the base 'sf-core' companion or by a plugin declared in requires.plugins (e.g. agentforce-generate comes from agentforce-adlc). Advisory for the engine and reviewers; the prompt is the source of truth for execution."
             }
           }
         },

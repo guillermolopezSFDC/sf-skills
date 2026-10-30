@@ -49,7 +49,7 @@ Follow the `platform-architecture-analyze` skill workflow. In brief:
 
 Prefer `dx-code-analyzer-run` for the heavy Apex security/performance lifting — it already classifies findings by severity. Use raw `grep` only for the simple structural signals the rubric lists (e.g. `without sharing` declarations, legacy-tech file types, `package.xml`-vs-source strategy).
 
-`dx-code-analyzer-run` ships in this same `salesforce-code-quality` plugin. The other delegates (`platform-lsp-integrate`, `platform-metadata-retrieve`, `platform-apex-generate`) live in the `salesforce-development` plugin — if it is not installed, those delegations are unavailable: skip the LSP/org-connected checks (mark those criteria "not observable — human review") and recommend the developer install `salesforce-development` for the fix step. Never fabricate a finding for a check you could not run.
+`dx-code-analyzer-run` ships in this same `salesforce-code-quality` plugin. The other delegates (`platform-lsp-integrate`, `platform-metadata-retrieve`, `platform-apex-generate`) live in the `sf-core` plugin — if it is not installed, those delegations are unavailable: skip the LSP/org-connected checks (mark those criteria "not observable — human review") and recommend the developer install `sf-core` for the fix step. Never fabricate a finding for a check you could not run.
 
 ## Output style
 

@@ -7,7 +7,7 @@ The flagship drive builds a **Service help agent** — an Agentforce agent that 
 questions, manages support cases, and hands off to a human — and deploys it as a **website chat
 widget**. It's built for two moments: an SE running a live, rehearsable demo, and a developer learning
 the platform by watching the real thing get built. The plugin checks what you have, helps you connect
-or provision an org, then choreographs the [`salesforce-development`](../salesforce-development) skills
+or provision an org, then choreographs the [`sf-core`](../sf-core) skills
 to do the build.
 
 ## Quick Start
@@ -16,13 +16,13 @@ to do the build.
    - [Claude Code](https://claude.ai/code) — latest
    - [Node.js LTS](https://nodejs.org)
    - [Salesforce CLI](https://developer.salesforce.com/tools/salesforcecli) — `sf`
-   - The **salesforce-development** plugin (the test drive builds on it). This plugin declares
-     that companion in `plugin.json` (`dependencies: ["salesforce-development"]`). Install both
+   - The **sf-core** plugin (the test drive builds on it). This plugin declares
+     that companion in `plugin.json` (`dependencies: ["sf-core"]`). Install both
      from the same marketplace — Claude Code may still let you install this plugin alone, so do
      not skip the foundation install:
      ```text
      /plugin marketplace add guillermolopezSFDC/sf-skills
-     /plugin install salesforce-development@gla_salesforce
+     /plugin install sf-core@gla_salesforce
      ```
 
 2. **Install this plugin** from the same marketplace:
@@ -77,7 +77,7 @@ Instrumentation is off by default; a normal run is clean. See
 Claude Code is the supported host. A native Codex adapter (`.codex-plugin/plugin.json`,
 `codex-commands/start.md`, [`references/codex-host.md`](references/codex-host.md)) runs the same
 engine with Codex-specific mechanics. It is not yet exercised in a live Codex session. It needs a
-Codex-enabled `salesforce-development` (one with `.codex-plugin/plugin.json`) and a new Codex
+Codex-enabled `sf-core` (one with `.codex-plugin/plugin.json`) and a new Codex
 session after any install. Codex has no `/salesforce-test-drive:start` slash command; ask it to start a Salesforce Test Drive (needs a Codex build with command migration, 0.145.0 or later). Because this plugin ships a Codex manifest, Salesforce Development can
 recommend and install it through its guarded flow; installation is not proof of live workflow
 verification.
